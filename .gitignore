@@ -1,0 +1,8 @@
+# Environment configuration
+**/.env
+
+# VS Code Configuration
+**/.vscode/
+
+# CodeIgniter
+**/codeigniter/
