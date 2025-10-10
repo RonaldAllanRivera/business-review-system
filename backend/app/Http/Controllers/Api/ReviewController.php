@@ -49,22 +49,29 @@ class ReviewController extends Controller
 
     public function update(UpdateReviewRequest $request, Review $review): JsonResponse
     {
-        $this->authorizeOwnership($request, $review);
+        // Ensure the review is loaded with the user relationship
+        $review->load('user');
+        
+        // Check if the authenticated user is the owner of the review
+        if ($request->user()->id !== $review->user_id) {
+            abort(403, 'You are not allowed to update this review.');
+        }
+        
         $review->update($request->validated());
         return response()->json(new ReviewResource($review->load(['business', 'user'])));
     }
 
     public function destroy(Request $request, Review $review): JsonResponse
     {
-        $this->authorizeOwnership($request, $review);
+        // Ensure the review is loaded with the user relationship
+        $review->load('user');
+        
+        // Check if the authenticated user is the owner of the review
+        if ($request->user()->id !== $review->user_id) {
+            abort(403, 'You are not allowed to delete this review.');
+        }
+        
         $review->delete();
         return response()->json(status: 204);
-    }
-
-    private function authorizeOwnership(Request $request, Review $review): void
-    {
-        if (!$request->user() || $request->user()->id !== $review->user_id) {
-            abort(403, 'You are not allowed to modify this review.');
-        }
     }
 }

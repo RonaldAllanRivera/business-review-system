@@ -77,16 +77,16 @@ class ReviewTest extends TestCase
         $otherToken = $other->createToken('api')->plainTextToken;
         $business = Business::factory()->create();
 
-        // Owner creates review
-        $created = $this->withHeader('Authorization', 'Bearer '.$ownerToken)
-            ->postJson('/api/v1/reviews', [
-                'business_id' => $business->id,
-                'rating' => 5,
-                'title' => 'Great',
-                'body' => 'Nice'
-            ])->assertCreated()->json();
+        // Owner's review created directly to avoid session cookie persistence
+        $review = Review::factory()->create([
+            'business_id' => $business->id,
+            'user_id' => $owner->id,
+            'rating' => 5,
+            'title' => 'Great',
+            'body' => 'Nice',
+        ]);
 
-        $id = $created['id'];
+        $id = $review->id;
 
         // Other user attempts update -> 403
         $this->withHeader('Authorization', 'Bearer '.$otherToken)
