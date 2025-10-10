@@ -52,7 +52,7 @@ A modern, full-featured business review platform built with Laravel 12, React.js
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/business-review-system.git
+   git clone https://github.com/RonaldAllanRivera/business-review-system.git
    cd business-review-system
    ```
 
@@ -92,6 +92,26 @@ A modern, full-featured business review platform built with Laravel 12, React.js
    ```bash
    php artisan serve
    ```
+
+## API
+
+All API routes are versioned and served under the `/api/v1` prefix.
+
+- Base path: `/api/v1`
+- Health check: `GET /api/v1/health`
+
+Example:
+
+```bash
+curl -s http://localhost:8000/api/v1/health | jq
+```
+
+Routing is registered in `backend/bootstrap/app.php` and routes are defined in `backend/routes/api.php`.
+
+Currently available stub endpoints:
+
+- `GET /api/v1/businesses`
+- `GET /api/v1/reviews`
 
 ## Development
 

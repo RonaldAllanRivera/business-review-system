@@ -17,6 +17,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Review question management
 - Testing framework setup
 - CI/CD pipeline configuration
+ - API routing registered in `backend/bootstrap/app.php`
+ - Versioned API routes in `backend/routes/api.php` with `GET /api/v1/health`
+ - Base API controllers: `HealthController`, `BusinessController`, `ReviewController`
+ - JSON resources: `UserResource`, `BusinessResource`, `ReviewResource`
+ - Feature test for health check: `tests/Feature/Api/HealthTest.php`
+
+### Changed
+- JSON resources configured to return unwrapped responses via `AppServiceProvider`
+- Documentation updates in `README.md` (API section, correct clone URL)
+- Default configuration for production readiness:
+  - Cache store default switched to `database` (`config/cache.php`)
+  - Queue connection default switched to `database` (`config/queue.php`)
+  - Session driver default switched to `database` (`config/session.php`)
 
 ## [0.1.0] - 2024-03-15
 ### Added
