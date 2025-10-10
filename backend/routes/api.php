@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,11 @@ Route::prefix('v1')->group(function () {
 
     // Protected write endpoints
     Route::middleware('auth:sanctum')->group(function () {
+        // Profile
+        Route::get('/profile', [ProfileController::class, 'show']);
+        Route::put('/profile', [ProfileController::class, 'update']);
+        Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar']);
+
         Route::apiResource('businesses', BusinessController::class)->only(['store', 'update', 'destroy']);
         Route::apiResource('reviews', ReviewController::class)->only(['store', 'update', 'destroy']);
     });

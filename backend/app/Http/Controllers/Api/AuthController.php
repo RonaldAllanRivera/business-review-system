@@ -8,7 +8,9 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Validation\ValidationException;
+use App\Events\UserActivityOccurred;
 
 class AuthController extends Controller
 {
@@ -26,7 +28,11 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        event(new Registered($user));
+        event(new UserActivityOccurred($user, 'registered'));
+
         $token = $user->createToken('api')->plainTextToken;
+        event(new UserActivityOccurred($user, 'login'));
 
         return response()->json([
             'token' => $token,
@@ -64,7 +70,9 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()?->delete();
+        $user = $request->user();
+        event(new UserActivityOccurred($user, 'logout'));
+        $user->currentAccessToken()?->delete();
 
         return response()->json(['message' => 'Logged out']);
     }
