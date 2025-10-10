@@ -102,16 +102,46 @@ All API routes are versioned and served under the `/api/v1` prefix.
 
 Example:
 
-```bash
 curl -s http://localhost:8000/api/v1/health | jq
 ```
-
 Routing is registered in `backend/bootstrap/app.php` and routes are defined in `backend/routes/api.php`.
 
 Currently available stub endpoints:
 
 - `GET /api/v1/businesses`
 - `GET /api/v1/reviews`
+
+### Auth (Sanctum)
+
+- `POST /api/v1/auth/register` (name, email, password, password_confirmation)
+- `POST /api/v1/auth/login` (email, password)
+- `GET /api/v1/auth/me` (Bearer token)
+- `POST /api/v1/auth/logout` (Bearer token)
+
+Example login + authenticated request:
+
+```bash
+TOKEN=$(curl -s -X POST http://localhost:8000/api/v1/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"test@example.com","password":"password"}' | jq -r .token)
+  
+curl -s http://localhost:8000/api/v1/auth/me -H "Authorization: Bearer $TOKEN" | jq
+```
+### Business endpoints
+
+- `GET /api/v1/businesses` supports `q`, `sort` (e.g., `-id`), and `per_page`
+- `GET /api/v1/businesses/{id}`
+- `POST /api/v1/businesses` (Bearer token)
+- `PUT /api/v1/businesses/{id}` (Bearer token)
+- `DELETE /api/v1/businesses/{id}` (Bearer token)
+
+### Review endpoints
+
+- `GET /api/v1/reviews` supports `business_id`, `user_id`, `sort`, `per_page`
+- `GET /api/v1/reviews/{id}`
+- `POST /api/v1/reviews` (Bearer token)
+- `PUT /api/v1/reviews/{id}` (Bearer token; owner only)
+- `DELETE /api/v1/reviews/{id}` (Bearer token; owner only)
 
 ## Development
 
