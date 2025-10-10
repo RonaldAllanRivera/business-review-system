@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Interactive API documentation with Swagger UI
+  - Accessible at `/api/documentation`
+  - Automatic API spec generation
+  - Try-it-out functionality
+  - Authentication support
+  - Request/response examples
+  - Model schemas
+  - Documentation at `/api/documentation.json`
 - Initial project setup with Laravel 12
 - React.js/Next.js frontend scaffolding
 - Filament 4 admin panel

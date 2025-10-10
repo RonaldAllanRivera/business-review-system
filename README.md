@@ -1,6 +1,45 @@
 # Business Review System
 
-A modern, full-featured business review platform built with Laravel 12, React.js, and Filament 4.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?logo=laravel)](https://laravel.com/)
+[![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react)](https://reactjs.org/)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?logo=php)](https://www.php.net/)
+[![API Documentation](https://img.shields.io/badge/API-Documentation-4FC08D?logo=swagger)](http://localhost:8000/api/documentation)
+
+## Overview
+
+A high-performance, scalable business review platform that enables users to discover, rate, and review local businesses. Built with modern web technologies following industry best practices for security, performance, and maintainability.
+
+### Key Achievements
+- **Robust Backend**: Implemented a secure, RESTful API with Laravel 12, featuring comprehensive test coverage and API documentation
+- **Modern Frontend**: Developed an intuitive user interface using React 18 and Next.js 14 with responsive design principles
+- **Admin Dashboard**: Created a powerful management interface using Filament 4 for efficient content and user management
+- **Performance**: Optimized database queries and implemented caching strategies for sub-second response times
+- **Security**: Implemented industry-standard authentication, authorization, and data validation
+- **CI/CD**: Established automated testing and deployment pipelines for reliable releases
+
+## 📋 Table of Contents
+
+- [✨ Features](#-features)
+  - [Public Features](#public-features)
+  - [Admin Features](#admin-features)
+- [🚀 Tech Stack](#-tech-stack)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+  - [Admin Panel](#admin-panel)
+- [📚 API Documentation](#api-documentation)
+  - [Features](#features)
+  - [Access](#access)
+- [🚀 Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Setup](#environment-setup)
+  - [Running the Application](#running-the-application)
+- [🧪 Testing](#-testing)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+---
 
 ## Features
 
@@ -38,6 +77,25 @@ A modern, full-featured business review platform built with Laravel 12, React.js
 - Filament 4
 - Livewire 3
 - Alpine.js
+
+## API Documentation
+
+The application provides comprehensive API documentation using Swagger UI. The API documentation is automatically generated from the codebase and can be accessed at:
+
+- **Swagger UI**: `http://localhost:8000/api/documentation`
+- **API Docs JSON**: `http://localhost:8000/api/documentation.json`
+
+### Features
+- Interactive API documentation
+- Try-it-out functionality
+- Authentication details
+- Request/response examples
+- Model schemas
+
+### Access
+- Public endpoints are accessible without authentication
+- Protected endpoints require a valid API token
+- Use the "Authorize" button to set your API token
 
 ## Getting Started
 

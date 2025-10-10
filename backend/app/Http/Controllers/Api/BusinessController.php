@@ -15,25 +15,12 @@ class BusinessController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = Business::query();
+        $query = Business::query()
+            ->search($request->query('q'))
+            ->ratingBetween($request->query('min_rating'), $request->query('max_rating'))
+            ->sorted($request->query('sort'));
 
-        if ($search = $request->string('q')->toString()) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
-                  ->orWhere('description', 'like', "%$search%");
-            });
-        }
-
-        $sort = $request->string('sort')->toString();
-        if ($sort) {
-            $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
-            $column = ltrim($sort, '-');
-            $query->orderBy($column, $direction);
-        } else {
-            $query->latest('id');
-        }
-
-        $perPage = (int) $request->integer('per_page', 15);
+        $perPage = (int) ($request->query('per_page', 15));
         $paginator = $query->paginate($perPage)->appends($request->query());
 
         return response()->json([

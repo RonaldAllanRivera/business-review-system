@@ -14,26 +14,13 @@ class ReviewController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = Review::query()->with(['business', 'user']);
+        $query = Review::query()
+            ->with(['business', 'user'])
+            ->byBusiness($request->query('business_id'))
+            ->byUser($request->query('user_id'))
+            ->sorted($request->query('sort'));
 
-        if ($businessId = $request->integer('business_id')) {
-            $query->where('business_id', $businessId);
-        }
-
-        if ($userId = $request->integer('user_id')) {
-            $query->where('user_id', $userId);
-        }
-
-        $sort = $request->string('sort')->toString();
-        if ($sort) {
-            $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
-            $column = ltrim($sort, '-');
-            $query->orderBy($column, $direction);
-        } else {
-            $query->latest('id');
-        }
-
-        $perPage = (int) $request->integer('per_page', 15);
+        $perPage = (int) ($request->query('per_page', 15));
         $paginator = $query->paginate($perPage)->appends($request->query());
 
         return response()->json([
