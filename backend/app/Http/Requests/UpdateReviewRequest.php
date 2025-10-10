@@ -8,7 +8,9 @@ class UpdateReviewRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        $review = $this->route('review');
+        $user = $this->user();
+        return $user && $review && (int) $user->id === (int) $review->user_id;
     }
 
     public function rules(): array

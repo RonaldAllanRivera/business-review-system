@@ -53,4 +53,49 @@ class ReviewTest extends TestCase
             ->deleteJson('/api/v1/reviews/'.$id)
             ->assertNoContent();
     }
+
+    public function test_can_sort_reviews_by_rating_desc(): void
+    {
+        $business = Business::factory()->create();
+        Review::factory()->create(['business_id' => $business->id, 'rating' => 2]);
+        Review::factory()->create(['business_id' => $business->id, 'rating' => 5]);
+        Review::factory()->create(['business_id' => $business->id, 'rating' => 4]);
+
+        $res = $this->getJson('/api/v1/reviews?business_id='.$business->id.'&sort=-rating&per_page=10')
+            ->assertOk()
+            ->json();
+
+        $ratings = array_map(fn($i) => (int)$i['rating'], $res['data']);
+        $this->assertSame([5, 4, 2], $ratings);
+    }
+
+    public function test_non_owner_cannot_update_or_delete_review(): void
+    {
+        $owner = User::factory()->create();
+        $other = User::factory()->create();
+        $ownerToken = $owner->createToken('api')->plainTextToken;
+        $otherToken = $other->createToken('api')->plainTextToken;
+        $business = Business::factory()->create();
+
+        // Owner creates review
+        $created = $this->withHeader('Authorization', 'Bearer '.$ownerToken)
+            ->postJson('/api/v1/reviews', [
+                'business_id' => $business->id,
+                'rating' => 5,
+                'title' => 'Great',
+                'body' => 'Nice'
+            ])->assertCreated()->json();
+
+        $id = $created['id'];
+
+        // Other user attempts update -> 403
+        $this->withHeader('Authorization', 'Bearer '.$otherToken)
+            ->putJson('/api/v1/reviews/'.$id, ['rating' => 1])
+            ->assertForbidden();
+
+        // Other user attempts delete -> 403
+        $this->withHeader('Authorization', 'Bearer '.$otherToken)
+            ->deleteJson('/api/v1/reviews/'.$id)
+            ->assertForbidden();
+    }
 }

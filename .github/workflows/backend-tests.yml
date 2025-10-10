@@ -1,0 +1,64 @@
+name: Backend Tests
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-tests.yml'
+  pull_request:
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-tests.yml'
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, sqlite3, pdo_sqlite
+          coverage: xdebug
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.composer/cache/files
+            backend/vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Copy .env (if needed)
+        run: |
+          if [ ! -f .env ]; then cp .env.example .env || true; fi
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Run database migrations (optional)
+        run: php artisan migrate --env=testing --no-interaction
+        continue-on-error: true
+
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit --testdox
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-logs
+          path: backend/storage/logs
+          if-no-files-found: ignore
