@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Business listing advanced filters and sorting
+  - `q`, `min_rating`, `max_rating`, `from`, `to`, `min_reviews`
+  - Sorting by `reviews_count` (supports `-reviews_count`)
+- Caching for business endpoints
+  - Index: 60s per-URL caching with versioned invalidation
+  - Show: 5m per-business caching with invalidation on update/delete
+- `reviews_count` exposure in `BusinessResource`
 - Interactive API documentation with Swagger UI
   - Accessible at `/api/documentation`
   - Automatic API spec generation
@@ -38,6 +45,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Cache store default switched to `database` (`config/cache.php`)
   - Queue connection default switched to `database` (`config/queue.php`)
   - Session driver default switched to `database` (`config/session.php`)
+ - `BusinessController` updated to apply advanced filters and caching
+ - `TESTS.md` updated with full Postman collection including advanced business filters
+
+### Fixed
+- 500 error on `GET /api/v1/businesses?min_reviews=5&sort=-reviews_count` by using `has('reviews', '>=', N)` in `withReviewsCountMin()` to avoid duplicate `withCount` conflicts when sorting by `reviews_count`
 
 ## [0.1.0] - 2024-03-15
 ### Added

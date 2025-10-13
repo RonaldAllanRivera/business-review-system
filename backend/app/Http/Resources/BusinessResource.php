@@ -18,6 +18,7 @@ class BusinessResource extends JsonResource
             'slug' => $this->slug ?? null,
             'description' => $this->description ?? null,
             'rating' => $this->rating ?? null,
+            'reviews_count' => $this->when(isset($this->reviews_count), $this->reviews_count),
             'created_at' => $this->created_at ?? null,
             'updated_at' => $this->updated_at ?? null,
         ];

@@ -187,11 +187,21 @@ curl -s http://localhost:8000/api/v1/auth/me -H "Authorization: Bearer $TOKEN" |
 ```
 ### Business endpoints
 
-- `GET /api/v1/businesses` supports `q`, `sort` (e.g., `-id`), and `per_page`
+- `GET /api/v1/businesses` supports advanced filters and sorting:
+  - `q` (search name/description)
+  - `min_rating`, `max_rating`
+  - `from`, `to` (YYYY-MM-DD for `created_at`)
+  - `min_reviews` (ensures at least N reviews)
+  - `sort` one of `id`, `name`, `rating`, `created_at`, `reviews_count` (prefix with `-` for desc)
+  - `per_page`
 - `GET /api/v1/businesses/{id}`
 - `POST /api/v1/businesses` (Bearer token)
 - `PUT /api/v1/businesses/{id}` (Bearer token)
 - `DELETE /api/v1/businesses/{id}` (Bearer token)
+
+Caching behavior:
+- List responses are cached per unique URL for ~60 seconds and invalidated on create/update/delete
+- Show responses are cached for 5 minutes and invalidated on update/delete of that business
 
 ### Review endpoints
 

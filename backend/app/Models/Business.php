@@ -51,6 +51,33 @@ class Business extends Model
     }
 
     /**
+     * Scope: filter by created_at date range (YYYY-MM-DD strings supported).
+     */
+    public function scopeCreatedBetween(Builder $query, $from = null, $to = null): Builder
+    {
+        if ($from) {
+            $query->whereDate('created_at', '>=', $from);
+        }
+        if ($to) {
+            $query->whereDate('created_at', '<=', $to);
+        }
+        return $query;
+    }
+
+    /**
+     * Scope: ensure businesses have at least N reviews. Adds reviews_count.
+     */
+    public function scopeWithReviewsCountMin(Builder $query, ?int $min): Builder
+    {
+        if ($min !== null && $min > 0) {
+            // Use has() to avoid introducing a reviews_count select that can conflict
+            // with sorting scope adding withCount('reviews') later.
+            $query->has('reviews', '>=', $min);
+        }
+        return $query;
+    }
+
+    /**
      * Scope: generic sorter. Accepts `field` or `-field` for desc.
      */
     public function scopeSorted(Builder $query, ?string $sort): Builder
@@ -61,9 +88,12 @@ class Business extends Model
         $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         $column = ltrim($sort, '-');
         // Whitelist allowed columns to prevent SQL injection
-        $allowed = ['id', 'name', 'rating', 'created_at'];
+        $allowed = ['id', 'name', 'rating', 'created_at', 'reviews_count'];
         if (!in_array($column, $allowed, true)) {
             return $query->latest('id');
+        }
+        if ($column === 'reviews_count') {
+            $query->withCount('reviews');
         }
         return $query->orderBy($column, $direction);
     }
