@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Notifications\ReviewModerated;
 
 class Review extends Model
 {
@@ -16,7 +17,15 @@ class Review extends Model
         'rating',
         'title',
         'body',
+        'status',
+        'moderated_by',
+        'moderated_at',
+        'rejection_reason',
     ];
+
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_APPROVED = 'approved';
+    public const STATUS_REJECTED = 'rejected';
 
     public function business()
     {
@@ -59,5 +68,38 @@ class Review extends Model
             return $query->latest('id');
         }
         return $query->orderBy($column, $direction);
+    }
+
+    /**
+     * Scope: only approved reviews.
+     */
+    public function scopeApproved(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_APPROVED);
+    }
+
+    /**
+     * Scope: only pending reviews.
+     */
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_PENDING);
+    }
+
+    /**
+     * Scope: only rejected reviews.
+     */
+    public function scopeRejected(Builder $query): Builder
+    {
+        return $query->where('status', self::STATUS_REJECTED);
+    }
+
+    protected static function booted(): void
+    {
+        static::updated(function (Review $review): void {
+            if ($review->wasChanged('status') && $review->user) {
+                $review->user->notify(new ReviewModerated($review));
+            }
+        });
     }
 }

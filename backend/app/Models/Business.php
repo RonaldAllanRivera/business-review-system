@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Review;
 
 class Business extends Model
 {
@@ -70,9 +71,10 @@ class Business extends Model
     public function scopeWithReviewsCountMin(Builder $query, ?int $min): Builder
     {
         if ($min !== null && $min > 0) {
-            // Use has() to avoid introducing a reviews_count select that can conflict
-            // with sorting scope adding withCount('reviews') later.
-            $query->has('reviews', '>=', $min);
+            // Only count approved reviews toward the minimum
+            $query->has('reviews', '>=', $min, 'and', function (Builder $q) {
+                $q->where('status', Review::STATUS_APPROVED);
+            });
         }
         return $query;
     }
@@ -93,7 +95,9 @@ class Business extends Model
             return $query->latest('id');
         }
         if ($column === 'reviews_count') {
-            $query->withCount('reviews');
+            $query->withCount(['reviews' => function (Builder $q) {
+                $q->where('status', Review::STATUS_APPROVED);
+            }]);
         }
         return $query->orderBy($column, $direction);
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\ReviewModerationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,5 +44,13 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('businesses', BusinessController::class)->only(['store', 'update', 'destroy']);
         Route::apiResource('reviews', ReviewController::class)->only(['store', 'update', 'destroy']);
+
+        // Review moderation (requires permission: review.moderate)
+        Route::middleware('permission:review.moderate')->group(function () {
+            Route::get('/reviews/moderation/pending', [ReviewModerationController::class, 'indexPending']);
+            Route::get('/reviews/moderation/all', [ReviewModerationController::class, 'indexAll']);
+            Route::post('/reviews/{review}/approve', [ReviewModerationController::class, 'approve']);
+            Route::post('/reviews/{review}/reject', [ReviewModerationController::class, 'reject']);
+        });
     });
 });

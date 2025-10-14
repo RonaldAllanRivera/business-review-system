@@ -20,6 +20,12 @@ class ReviewController extends Controller
             ->byUser($request->query('user_id'))
             ->sorted($request->query('sort'));
 
+        // Public listing shows only approved unless user can moderate
+        $user = $request->user();
+        if (!$user || !$user->can('review.moderate')) {
+            $query->approved();
+        }
+
         $perPage = (int) ($request->query('per_page', 15));
         $paginator = $query->paginate($perPage)->appends($request->query());
 
@@ -38,12 +44,17 @@ class ReviewController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
+        $data['status'] = Review::STATUS_PENDING;
         $review = Review::create($data);
         return response()->json(new ReviewResource($review->load(['business', 'user'])), 201);
     }
 
     public function show(Review $review): JsonResponse
     {
+        $user = request()->user();
+        $canView = $review->status === Review::STATUS_APPROVED
+            || ($user && ($user->id === $review->user_id || $user->can('review.moderate')));
+        abort_unless($canView, 404);
         return response()->json(new ReviewResource($review->load(['business', 'user'])));
     }
 

@@ -51,12 +51,36 @@ A high-performance, scalable business review platform that enables users to disc
 - Responsive design for all devices
 
 ### Admin Features
-- Business management
-- Review moderation
-- User management
-- Custom review questions
-- Analytics and reporting
-- System configuration
+- **Role-Based Access Control**
+  - Granular permissions for admin and moderator roles
+  - Secure access control to admin features
+  - Permission management interface
+- **Review Moderation**
+  - Approve/reject reviews with custom rejection reasons
+  - Bulk moderation actions
+  - Email notifications for moderated reviews
+  - Audit trail of moderation actions
+- **Admin Dashboard**
+  - Review statistics and metrics
+  - Pending reviews queue
+  - User activity monitoring
+  - System health status
+- **Business Management**
+  - Full CRUD operations
+  - Advanced filtering and search
+  - Business verification system
+- **User Management**
+  - User roles and permissions
+  - Activity logs
+  - Account management
+- **Analytics & Reporting**
+  - Review trends
+  - User engagement metrics
+  - Exportable reports
+- **System Configuration**
+  - Email templates
+  - Review guidelines
+  - System settings
 
 ## Tech Stack
 

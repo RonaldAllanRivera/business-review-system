@@ -62,7 +62,8 @@ class BusinessController extends Controller
         $cacheKey = 'businesses:show:'.$business->id;
         $ttl = now()->addMinutes(5);
         $data = Cache::remember($cacheKey, $ttl, function () use ($business) {
-            return (new BusinessResource($business->loadCount('reviews')))->resolve();
+            $business->loadCount(['reviews' => function ($q) { $q->where('status', \App\Models\Review::STATUS_APPROVED); }]);
+            return (new BusinessResource($business))->resolve();
         });
         return response()->json($data);
     }
