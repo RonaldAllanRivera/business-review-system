@@ -20,6 +20,7 @@ class ReviewFactory extends Factory
             'rating' => $this->faker->numberBetween(1, 5),
             'title' => $this->faker->optional()->sentence(6),
             'body' => $this->faker->optional()->paragraph(),
+            'status' => Review::STATUS_APPROVED,
         ];
     }
 }
