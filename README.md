@@ -104,10 +104,27 @@ A high-performance, scalable business review platform that enables users to disc
 
 ## API Documentation
 
-The application provides comprehensive API documentation using Swagger UI. The API documentation is automatically generated from the codebase and can be accessed at:
+## 📚 API Documentation
 
-- **Swagger UI**: `http://localhost:8000/api/documentation`
-- **API Docs JSON**: `http://localhost:8000/api/documentation.json`
+The API is fully documented using OpenAPI 3.0 specification with Swagger UI.
+
+### Features
+- Interactive API explorer
+- Try-it-out functionality for all endpoints
+- Detailed request/response schemas
+- Authentication examples
+- Error response documentation
+- Request validation rules
+- Response status codes
+- Example values
+
+### Access
+- **Swagger UI**: [https://admin.artworkwebsite.com/api/documentation](https://admin.artworkwebsite.com/api/documentation)
+- **OpenAPI JSON**: [https://admin.artworkwebsite.com/docs?api-docs.json](https://admin.artworkwebsite.com/docs?api-docs.json)
+- **Admin Panel Access**: Available in the sidebar under "API Documentation" and "OpenAPI JSON"
+
+### Authentication
+The API uses Bearer token authentication. Include your token in the `Authorization` header:
 
 ### Features
 - Interactive API documentation

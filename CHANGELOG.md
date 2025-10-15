@@ -5,8 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
 
+## [1.1.0] - 2024-10-15
+### Added
+- **API Documentation**
+  - Complete OpenAPI 3.0 specification for all endpoints
+  - Dynamic server URL configuration using APP_URL
+  - Detailed request/response schemas
+  - Authentication requirements
+  - Example requests and responses
+  - Parameter descriptions and validations
+  - Response status codes and error formats
+  - Added Swagger UI and JSON links to admin panel
+  - Automatic documentation generation
+
+### Changed
+- **API**
+  - Updated Swagger configuration to use dynamic host from environment
+  - Improved error handling consistency
+  - Enhanced validation error messages
+  - Added proper content types to all responses
+  - Standardized pagination format across all list endpoints
+  - Improved API security headers
+  - Added rate limiting to authentication endpoints
+  - Enhanced input validation rules
+  - Updated response formats to match OpenAPI spec
+
+### Fixed
+- **Documentation**
+  - Fixed incorrect parameter types in API docs
+  - Added missing required fields to request schemas
+  - Corrected response status codes
+  - Fixed example values to match expected formats
+  - Added missing authentication requirements
+  - Fixed broken references in API documentation
+  - Ensured all endpoints are properly documented
+  - Fixed CORS configuration for API endpoints
+  - Resolved inconsistencies in error response formats
+
+### Security
+- **API**
+  - Added proper CORS configuration
+  - Implemented CSRF protection for state-changing endpoints
+  - Added rate limiting to prevent abuse
+  - Improved input sanitization
+  - Added security headers
+  - Implemented proper error handling to avoid information leakage
+  - Validated all input parameters
+  - Secured file upload endpoints
+  - Implemented proper file type validation
+  - Added size limits to file uploads
+
+## [1.0.0] - 2024-04-05
 ### Added
 - **Admin Dashboard**
   - Review statistics and metrics widgets
@@ -61,6 +111,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Base API controllers: `HealthController`, `BusinessController`, `ReviewController`
 - JSON resources: `UserResource`, `BusinessResource`, `ReviewResource`
 - Feature test for health check: `tests/Feature/Api/HealthTest.php`
+- Production-ready features
+- Comprehensive test coverage
+- Deployment scripts
+- Monitoring setup
 
 ### Changed
 - JSON resources configured to return unwrapped responses via `AppServiceProvider`
@@ -69,18 +123,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Cache store default switched to `database` (`config/cache.php`)
   - Queue connection default switched to `database` (`config/queue.php`)
   - Session driver default switched to `database` (`config/session.php`)
- - `BusinessController` updated to apply advanced filters and caching
- - `TESTS.md` updated with full Postman collection including advanced business filters
+- `BusinessController` updated to apply advanced filters and caching
+- `TESTS.md` updated with full Postman collection including advanced business filters
+- Code optimization
+- Documentation updates
+- Performance improvements
 
 ### Fixed
 - 500 error on `GET /api/v1/businesses?min_reviews=5&sort=-reviews_count` by using `has('reviews', '>=', N)` in `withReviewsCountMin()` to avoid duplicate `withCount` conflicts when sorting by `reviews_count`
+- Performance issues
+- Security vulnerabilities
+- UI/UX improvements
 
-## [0.1.0] - 2024-03-15
+## [0.3.0] - 2024-03-29
 ### Added
-- Project initialization
-- Basic project structure
-- Development environment setup
-- Initial documentation
+- Advanced search functionality
+- Review moderation tools
+- User management
+- Role-based access control
+- Email notifications
+
+### Fixed
+- Performance issues
+- Security vulnerabilities
+- UI/UX improvements
 
 ## [0.2.0] - 2024-03-22
 ### Added
@@ -91,6 +157,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API documentation
 
 ### Changed
+- Updated dependencies
+- Improved error handling
+- Enhanced security measures
+
+## [0.1.0] - 2024-03-15
+### Added
+- Project initialization
+- Basic project structure
+- Development environment setup
+- Initial documentation
+
 - Updated dependencies
 - Improved error handling
 - Enhanced security measures
