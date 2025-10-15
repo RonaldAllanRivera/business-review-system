@@ -49,6 +49,10 @@ class AdminPanelProvider extends PanelProvider
                     ->url(url('/api/documentation'))
                     ->icon('heroicon-o-book-open')
                     ->openUrlInNewTab(),
+                NavigationItem::make('OpenAPI JSON')
+                    ->url(url('/docs?api-docs.json'))
+                    ->icon('heroicon-o-code-bracket-square')
+                    ->openUrlInNewTab(),
             ])
             ->middleware([
                 EncryptCookies::class,
