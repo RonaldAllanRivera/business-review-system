@@ -12,6 +12,15 @@ This guide provides step-by-step instructions for deploying a Laravel applicatio
 
 ## Server Configuration
 
+### Best option for siteground
+rm -rf .[!.]* * 2>/dev/null || true
+
+
+REPO_DIR="$HOME/business-review-system" && rm -rf "$REPO_DIR" && git clone --depth 1 --filter=blob:none --sparse https://github.com/RonaldAllanRivera/business-review-system.git "$REPO_DIR" && cd "$REPO_DIR" && git sparse-checkout set backend && rsync -a backend/ /home/u1749-rcrdj5mtlngn/www/admin.artworkwebsite.com/public_html/ ; rm -rf "$REPO_DIR"
+
+
+
+
 ### 1. Connect to SiteGround via SSH
 
 ```bash
@@ -46,18 +55,16 @@ Ensure these extensions are enabled:
 
 ## Deployment Setup
 
-### 1. Create Deployment Directory
+### 1. Delete all files on Deployment Directory
 
 ```bash
-cd ~/www/
-mkdir -p yourdomain.com
-cd yourdomain.com
+rm -rf .[!.]* * 2>/dev/null || true
 ```
 
 ### 2. Clone Your Repository
 
 ```bash
-git clone https://github.com/yourusername/your-repo.git .
+REPO_DIR="$HOME/business-review-system" && rm -rf "$REPO_DIR" && git clone --depth 1 --filter=blob:none --sparse https://github.com/RonaldAllanRivera/business-review-system.git "$REPO_DIR" && cd "$REPO_DIR" && git sparse-checkout set backend && rsync -a backend/ /home/u1749-rcrdj5mtlngn/www/admin.artworkwebsite.com/public_html/ ; rm -rf "$REPO_DIR"
 ```
 
 ### 3. Install Dependencies
@@ -95,6 +102,7 @@ chmod -R 775 bootstrap/cache/
 
 ```bash
 php artisan migrate --force
+php artisan db:seed
 ```
 
 ### 8. Storage Link

@@ -4,7 +4,7 @@
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?logo=laravel)](https://laravel.com/)
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react)](https://reactjs.org/)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?logo=php)](https://www.php.net/)
-[![API Documentation](https://img.shields.io/badge/API-Documentation-4FC08D?logo=swagger)](http://localhost:8000/api/documentation)
+[![API Documentation](https://img.shields.io/badge/API-Documentation-4FC08D?logo=swagger)](https://admin.artworkwebsite.com/api/documentation)
 
 ## Overview
 

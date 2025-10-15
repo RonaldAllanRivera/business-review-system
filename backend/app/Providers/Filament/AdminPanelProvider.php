@@ -11,6 +11,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -42,6 +43,12 @@ class AdminPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
                 ReviewStatsWidget::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make('API Documentation')
+                    ->url(url('/api/documentation'))
+                    ->icon('heroicon-o-book-open')
+                    ->openUrlInNewTab(),
             ])
             ->middleware([
                 EncryptCookies::class,
